@@ -13,7 +13,7 @@ class SearchTechnique(object):
 				model -> function() : method to create the Keras model.
 		"""
 		self.parameters = parameters
-		self.model = type(model)
+		self.model = model
 		self.performance_validator = performance_validator
 
 	def fit(self, X_train, y_train):

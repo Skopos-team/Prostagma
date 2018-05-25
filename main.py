@@ -78,7 +78,7 @@ def main():
         log_dir=args.log_dir,
         model_path=args.model_path,
         parameters=default_parameters
-        )
+        ) 
 
     # Restore the model
     if args.restore == True:
@@ -105,7 +105,7 @@ def main():
     if args.tune == True:
 	    strategy = EvolutionaryStrategy(
 	    	parameters=parameters, 
-	    	model=Model(), 
+	    	model=model.build_model(), 
 	    	performance_validator=CrossValidation(
 	    			epochs=args.epochs,
 	    			batch_size=args.batch_size

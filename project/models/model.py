@@ -5,27 +5,25 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
 
 class Model(object):
     def __init__(self, log_dir=None, 
-    		model_path=None, parameters=None):
+            parameters, model_path=None):
         super(Model, self).__init__()
         """
 			self.accuracy represents how good is a certain model. 
 			When trained/tested the variable is updated based
 			on the validation metric.
         """
-        self.accuracy = 0.0
         self.log_dir = log_dir
         self.model_path = model_path
-        self.parameters = parameters
-        self.model = self.build_model()
+        self.model = self.build_model(parameters)
         self.checkpointers = self.build_checkpointers()
 
-    def build_model(self):
+    def build_model(self, parameters):
+    	
+        # Get parameters
+        dropout = parameters["dropout"]
+        learning_rate = parameters["learning_rate"]
 
-    	# Get parameters
-		dropout = self.parameters["dropout"]
-		learning_rate = self.parameters["learning_rate"]
-
-		# Define Model architecture
+        # Define Model architecture
     	model = Sequential()
     	model.add(Conv2D(32, (3, 3), padding="SAME", input_shape=(28, 28, 1)))
     	model.add(Activation("relu"))

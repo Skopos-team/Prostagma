@@ -18,7 +18,7 @@ class CrossValidation(Performance):
 			Stratified K-fold Cross validation.
 	"""
 
-	def fit(self, X_train, y_train, network):
+	def fit(self, X_train, y_train, model):
 		all_mae_histories = [] 
 		num_val_samples = len(data) / self.k
 		for i in range(self.k):
