@@ -21,6 +21,10 @@ def check_dependencies():
     except ImportError:
         install_requires.append('pandas')
     try:
+        import tensorflow
+    except ImportError:
+        install_requires.append('tensorflow')
+    try:
         import keras
     except ImportError:
         install_requires.append('keras')
