@@ -7,6 +7,6 @@ class Performance(object):
 		self.epochs = epochs
 		self.batch_size = batch_size
 
-	def fit(self, X_train, y_train, model):
+	def fit(self, X_train, y_train, model, parameters=None):
 		raise NotImplementedError
 		

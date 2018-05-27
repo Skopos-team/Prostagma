@@ -3,10 +3,11 @@ from operator import add
 import random
 
 from prostagma.techniques.technique import SearchTechnique
+from prostagma.performances.cross_validation import CrossValidation
 
 class EvolutionaryStrategy(SearchTechnique):
 	def __init__(self, parameters, model, 
-			performance_validator=CrossValidation(k=5), 
+			performance_validator=CrossValidation(), 
 			retain=0.3, random_select=0.1, mutate_prob=0.2, 
 			generations=10, population_size=20):
 		super(EvolutionaryStrategy, self).__init__(parameters=parameters, 

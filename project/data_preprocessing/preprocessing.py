@@ -29,7 +29,7 @@ class Preprocessor(object):
 	def rescale_features(self, X):
 		X = X.astype("float32")
 		X /= 255
-		return
+		return X
 
 	def train_test_validation_split(self, features, labels):
 		
@@ -37,7 +37,7 @@ class Preprocessor(object):
 		y_test = labels[0:self.test_samples]
 
 		X_val = features[self.test_samples:self.test_samples + self.val_samples]
-		y_val = labels[test_samples:test_samples + val_samples]
+		y_val = labels[self.test_samples:self.test_samples + self.val_samples]
 
 		X_train = features[self.test_samples + self.val_samples: \
 			self.test_samples + self.val_samples + self.train_samples]

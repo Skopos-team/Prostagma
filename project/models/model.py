@@ -4,8 +4,7 @@ from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
 
 class Model(object):
-    def __init__(self, log_dir=None, 
-            parameters, model_path=None):
+    def __init__(self, log_dir=None, model_path=None):
         super(Model, self).__init__()
         """
 			self.accuracy represents how good is a certain model. 
@@ -14,39 +13,43 @@ class Model(object):
         """
         self.log_dir = log_dir
         self.model_path = model_path
-        self.model = self.build_model(parameters)
+        self.model = self.build_model()
         self.checkpointers = self.build_checkpointers()
 
-    def build_model(self, parameters):
-    	
+    def build_model(self, parameters=None):        
+        
         # Get parameters
-        dropout = parameters["dropout"]
-        learning_rate = parameters["learning_rate"]
+        try:
+            dropout = parameters["dropout"]
+            learning_rate = parameters["learning_rate"]
+        except:
+            dropout = 0.1
+            learning_rate = 0.001
 
         # Define Model architecture
-    	model = Sequential()
-    	model.add(Conv2D(32, (3, 3), padding="SAME", input_shape=(28, 28, 1)))
-    	model.add(Activation("relu"))
-    	model.add(Conv2D(32, (3, 3)))
-    	model.add(Activation("relu"))
-    	model.add(MaxPooling2D(pool_size=(2, 2)))
-    	model.add(Dropout(dropout))
+        model = Sequential()
+        model.add(Conv2D(32, (3, 3), padding="SAME", input_shape=(28, 28, 1)))
+        model.add(Activation("relu"))
+        model.add(Conv2D(32, (3, 3)))
+        model.add(Activation("relu"))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(dropout))
 
-    	model.add(Conv2D(64, (3, 3), padding="SAME"))
-    	model.add(Activation("relu"))
-    	model.add(Conv2D(64, (3, 3)))
-    	model.add(Activation("relu"))
-    	model.add(MaxPooling2D(pool_size=(2, 2)))
-    	model.add(Dropout(dropout))
+        model.add(Conv2D(64, (3, 3), padding="SAME"))
+        model.add(Activation("relu"))
+        model.add(Conv2D(64, (3, 3)))
+        model.add(Activation("relu"))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(dropout))
 
-    	model.add(Flatten())
-    	model.add(Dense(512))
-    	model.add(Activation("relu"))
-    	model.add(Dropout(dropout))
-    	model.add(Dense(10))
-    	model.add(Activation("softmax"))
+        model.add(Flatten())
+        model.add(Dense(512))
+        model.add(Activation("relu"))
+        model.add(Dropout(dropout))
+        model.add(Dense(10))
+        model.add(Activation("softmax"))
 
-    	# Compile the model
+        # Compile the model
         model.compile(
             optimizer=Adam(learning_rate),
             loss="categorical_crossentropy", 
@@ -68,14 +71,14 @@ class Model(object):
 
         return checkpointers
 
-    def fit(self, X_train, y_train, X_val, y_val, epochs, batch_size):
+    def fit(self, X_train, y_train, epochs, batch_size, X_val=None, y_val=None):
         history = self.model.fit(
-                    X_train, y_train,
-                    epochs=epochs,
-                    validation_data=(X_val, y_val),
-                    batch_size=batch_size,
-                    verbose=1,
-                    callbacks=self.checkpointers)
+            X_train, y_train,
+            epochs=epochs,
+            validation_data=(X_val, y_val),
+            batch_size=batch_size,
+            verbose=1,
+            callbacks=self.checkpointers)
 
         return history
 
@@ -87,11 +90,26 @@ class Model(object):
         y_pred = self.model.predict(X)
         return y_pred
 
-    def restore(self):
+    def restore_weights(self):
         try:
             self.model.load_weights(self.model_path + ".h5")
             print("Loaded model from disk")
         except OSError:
             pass
+        return
+
+    def run_model(self, X_train, y_train, X_test, y_test, 
+        X_val, y_val, train, test):
+        
+        # Train the model
+        if train == True:
+            history = self.fit(X_train, y_train, X_val, y_val)
+        
+        # Test the model
+        if test == True:
+            score = self.evaluate(X_test, y_test)
+            print("SCORE: ", score)
+
+
         return
 		

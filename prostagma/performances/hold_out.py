@@ -1,28 +1,48 @@
+from sklearn.utils import shuffle
 
+from prostagma.performances.performance import Performance
 
-class HoldOut(object):
-	"""docstring for HoldOut"""
-	def __init__(self, arg):
+class HoldOut(Performance):
+	def __init__(self, val_samples=100):
 		super(HoldOut, self).__init__()
-		self.arg = arg
+		self.val_samples = val_samples
+		"""
+			@args
+				val_samples : int -> number of samples
+					used to validate the training.
+		"""
 
-	def fit(X_train, y_train):
-		num_validation_samples = 10000
-np.random.shuffle(data)
-Defines the validation set
-   validation_data = data[:num_validation_samples]
- data = data[num_validation_samples:]
-training_data = data[:]
-Defines the training set
-   model = get_model() Trains a model on the training
-model.train(training_data)
-validation_score = model.evaluate(validation_data)
-# At this point you can tune your model,
-# retrain it, evaluate it, tune it again...
-data, and evaluates it on the validation data
- model = get_model() Once you’ve tuned your
-model.train(np.concatenate([training_data,
-                            validation_data]))
-test_score = model.evaluate(test_data)
-		return
+	def fit(X_train, y_train, model, parameters=None):
+		"""
+			The method computes a simple hold out validation
+			on the training data, returning the results 
+			obtained.
+
+			@args
+				X_train : numpy array -> features
+				y_train ; numpy array -> labels
+				model : method to create the Keras model
+				parameters : dictionary of parameters based on 
+					the defined model
+			@return
+				metric : float -> score obtained on the
+					validation set
+		"""
+		
+		print("Validating the Model... ")
+		X_train, y_train = shuffle(X_train, y_train)
+		val_x = X_train[0:self.val_samples] 
+		val_y = y_train[0:self.val_samples]
+		train_x = X_train[self.val_samples:]
+		train_y = y_train[self.val_samples:]
+			network = model(parameters)
+			network.fit(
+				x=train_x, 
+				y=train_y, 
+				epochs=self.epochs, 
+				batch_size=self.batch_size,
+				verbose=0
+				)
+			_ , metric = network.evaluate(x=val_x, y=val_y, verbose=0)
+		return metric
 		

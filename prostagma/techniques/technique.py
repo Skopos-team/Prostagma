@@ -1,9 +1,10 @@
 
+from prostagma.performances.cross_validation import CrossValidation
 
 class SearchTechnique(object):
 	"""docstring for Technique"""
 	def __init__(self, parameters, model, 
-			performance_validator=CrossValidation(k=5)):
+			performance_validator=CrossValidation()):
 		super(SearchTechnique, self).__init__()
 		"""
 			args:
@@ -15,6 +16,8 @@ class SearchTechnique(object):
 		self.parameters = parameters
 		self.model = model
 		self.performance_validator = performance_validator
+		self.best_score = (0, 0)
+		self.best_param = None
 
 	def fit(self, X_train, y_train):
 		raise NotImplementedError
