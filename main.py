@@ -6,7 +6,6 @@ from project.data_preprocessing.preprocessing import Preprocessor
 from project.data_preprocessing.data_loader import Loader
 from project.models.model import Model
 
-from prostagma.techniques.evolutionary import EvolutionaryStrategy
 from prostagma.techniques.grid_search import GridSearch
 from prostagma.performances.cross_validation import CrossValidation
 
