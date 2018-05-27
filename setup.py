@@ -34,7 +34,7 @@ install_requires = check_dependencies()
 
 setup(
   name = 'prostagma',
-  version = '0.1',
+  version = '0.2',
   description = 'Hyperparameters Tuning Library',
   author = 'Skopos-team',
   packages=find_packages(),
@@ -42,7 +42,7 @@ setup(
   author_email = 'skopos.library@gmail.com',
   url = 'https://github.com/Skopos-team/Prostagma', 
   license='Apache2',
-  download_url = 'https://github.com/Skopos-team/Prostagma/archive/0.1.tar.gz',
+  download_url = 'https://github.com/Skopos-team/Prostagma/archive/0.2.tar.gz',
   keywords = ['testing', 'logging', 'example'],
   classifiers = ['Programming Language :: Python :: 3.5',
                   'Operating System :: POSIX',
